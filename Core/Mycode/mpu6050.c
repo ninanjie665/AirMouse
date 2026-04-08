@@ -15,7 +15,7 @@ void MPU6050_Calibrate(void) {
         sum += raw_x / gyro_sensitivity;
         HAL_Delay(5);
     }
-    gyro_sensitivity = sum / 200;
+    gyron_offset_x = sum / 200;
 }
 
 void MPU6050_WriteReg(uint8_t address,uint8_t data) {

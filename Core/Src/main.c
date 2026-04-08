@@ -38,9 +38,9 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 // 空中鼠标参数
-#define SENSITIVITY     3.6f     // 灵敏度（像素/度/秒），需实测调整
+#define SENSITIVITY     13.6f     // 灵敏度（像素/度/秒），需实测调整
 #define DT              0.01f    // 定时器周期 10ms = 0.01秒
-#define DEAD_ZONE       0.5f     // 死区阈值（dps），小于此值忽略
+#define DEAD_ZONE       1.5f     // 死区阈值（dps），小于此值忽略
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -194,7 +194,7 @@ void OnTimerCallBack(void) {
   // 注意强制转为 uint8_t，超出范围会截断，最好先限幅
   if (dx > 127) dx = 127;
   if (dx < -127) dx = -127;
-  report[1] = (uint8_t)(dx);
+  report[1] = (uint8_t)(-dx);
 
   // report[2] : Y 轴位移
   if (dy > 127) dy = 127;
