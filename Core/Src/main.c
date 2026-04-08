@@ -100,6 +100,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim2);
   MPU6050_Init();
+  MPU6050_Calibrate();
   /* USER CODE END 2 */
 
   /* Infinite loop */

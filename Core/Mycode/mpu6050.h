@@ -20,5 +20,6 @@ void MPU6050_WriteReg(uint8_t address,uint8_t data);
 
 void MPU6050_Init(void);
 void MPU6050_GetGyroDPS(float *wx, float *wy, float *wz);
+void MPU6050_Calibrate(void);
 
 #endif //AIRMOUSE_MPU6050_H

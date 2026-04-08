@@ -1,8 +1,22 @@
 #include "mpu6050.h"
 
 #include <stdio.h>
-
+static float gyron_offset_x = 0;
 float gyro_sensitivity = 16.4f;
+
+
+void MPU6050_Calibrate(void) {
+    float sum = 0;
+    for (int i = 0; i < 200;i++) {
+        uint8_t buf[6];
+        HAL_I2C_Mem_Read(&hi2c1,MPU6050_ADDR,MPU6050_GYRO_XOUT_H,
+            I2C_MEMADD_SIZE_8BIT,buf,6,5);
+        int16_t raw_x = (int16_t)((buf[0] << 8) | 8 );
+        sum += raw_x / gyro_sensitivity;
+        HAL_Delay(5);
+    }
+    gyro_sensitivity = sum / 200;
+}
 
 void MPU6050_WriteReg(uint8_t address,uint8_t data) {
     uint8_t buf[2];
@@ -38,7 +52,7 @@ void MPU6050_GetGyroDPS(float *wx, float *wy, float *wz) {
     int16_t raw_y = (int16_t)((buf[2] << 8) | buf[3]); //y
     int16_t raw_z = (int16_t)((buf[4] << 8) | buf[5]); //z
 
-    float x_dps = raw_x / gyro_sensitivity;
+    float x_dps = raw_x / gyro_sensitivity - gyron_offset_x;
     float y_dps = raw_y / gyro_sensitivity;
     float z_dps = raw_z / gyro_sensitivity;
 
