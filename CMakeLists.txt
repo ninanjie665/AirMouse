@@ -36,7 +36,9 @@ add_executable(${CMAKE_PROJECT_NAME}
         Core/Mycode/mpu6050.h
         Core/Mycode/mpu6050.c
         Core/Mycode/mahony.h
-        Core/Mycode/mahony.c)
+        Core/Mycode/mahony.c
+        Core/Mycode/mouse.c
+        Core/Mycode/mouse.h)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)

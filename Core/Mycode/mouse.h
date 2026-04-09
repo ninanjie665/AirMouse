@@ -1,0 +1,13 @@
+//
+// Created by Administrator on 2026/4/9.
+//
+
+#ifndef AIRMOUSE_MOUSE_H
+#define AIRMOUSE_MOUSE_H
+#include "mpu6050.h"
+#include "mahony.h"
+
+
+void Gyro_To_MouseMove();
+void Angal_To_MouseMove();
+#endif //AIRMOUSE_MOUSE_H
