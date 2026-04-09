@@ -97,8 +97,12 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM2_Init();
   MX_USB_DEVICE_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);  // 启动编码器模式
+  __HAL_TIM_SET_COUNTER(&htim3, 0);
   HAL_TIM_Base_Start_IT(&htim2);
+            // 可选：计数器清零
   MPU6050_Init();
   MPU6050_Calibrate();
   Mahony_Init();
