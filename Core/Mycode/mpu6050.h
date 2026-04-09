@@ -15,11 +15,13 @@
 #define MPU6050_GYRO_CONFIG   0x1B
 #define MPU6050_ACCEL_CONFIG  0x1C
 #define MPU6050_GYRO_XOUT_H   0x43    // 陀螺仪X轴高8位寄存器
+#define MPU6050_ACCEL_XOUT_H   0x3B    // 加速度计X轴高8位寄存器
 
 void MPU6050_WriteReg(uint8_t address,uint8_t data);
 
 void MPU6050_Init(void);
 void MPU6050_GetGyroDPS(float *wx, float *wy, float *wz);
 void MPU6050_Calibrate(void);
+void MPU6050_GetAccel(float *ax, float *ay, float *az);
 
 #endif //AIRMOUSE_MPU6050_H

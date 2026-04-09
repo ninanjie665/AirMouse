@@ -3,6 +3,7 @@
 #include <stdio.h>
 static float gyron_offset_x = 0;
 float gyro_sensitivity = 16.4f;
+float accel_sensitivity = 2018.0f;
 
 
 void MPU6050_Calibrate(void) {
@@ -11,7 +12,7 @@ void MPU6050_Calibrate(void) {
         uint8_t buf[6];
         HAL_I2C_Mem_Read(&hi2c1,MPU6050_ADDR,MPU6050_GYRO_XOUT_H,
             I2C_MEMADD_SIZE_8BIT,buf,6,5);
-        int16_t raw_x = (int16_t)((buf[0] << 8) | 8 );
+        int16_t raw_x = (int16_t)((buf[0] << 8) | buf[1] );
         sum += raw_x / gyro_sensitivity;
         HAL_Delay(5);
     }
@@ -56,14 +57,40 @@ void MPU6050_GetGyroDPS(float *wx, float *wy, float *wz) {
     float y_dps = raw_y / gyro_sensitivity;
     float z_dps = raw_z / gyro_sensitivity;
 
-    static float x_filt = 0, y_filt = 0, z_filt = 0;
+    static float x_filt_gyro = 0, y_filt_gyro = 0, z_filt_gyro = 0;
     float alpha = 0.2f;
 
-    x_filt = x_dps * alpha + (1 - alpha) * x_filt;
-    y_filt = y_dps * alpha + (1 - alpha) * y_filt;
-    z_filt = z_dps * alpha + (1 - alpha) * z_filt;
+    x_filt_gyro = x_dps * alpha + (1 - alpha) * x_filt_gyro;
+    y_filt_gyro = y_dps * alpha + (1 - alpha) * y_filt_gyro;
+    z_filt_gyro = z_dps * alpha + (1 - alpha) * z_filt_gyro;
 
-    *wx = x_filt;
-    *wy = y_filt;
-    *wz = z_filt;
+    *wx = x_filt_gyro;
+    *wy = y_filt_gyro;
+    *wz = z_filt_gyro;
+}
+
+void MPU6050_GetAccel(float *ax,float *ay,float *az) {
+    uint8_t buf[6];
+
+    HAL_I2C_Mem_Read(&hi2c1,MPU6050_ADDR,MPU6050_ACCEL_XOUT_H,
+        I2C_MEMADD_SIZE_8BIT,buf,6,10);
+
+    int16_t raw_x = (int16_t)((buf[0] << 8) | buf[1]);
+    int16_t raw_y = (int16_t)((buf[2] << 8) | buf[3]);
+    int16_t raw_z = (int16_t)((buf[4] << 8) | buf[5]);
+
+    float x_g = raw_x /accel_sensitivity;
+    float y_g = raw_y /accel_sensitivity;
+    float z_g = raw_z /accel_sensitivity;
+
+    static float x_filt_accel = 0, y_filt_accel = 0, z_filt_accel = 0;
+    float alpha = 0.2f;
+
+    x_filt_accel = x_g * alpha + (1 -alpha) * x_filt_accel;
+    y_filt_accel = y_g * alpha + (1 -alpha) * y_filt_accel;
+    z_filt_accel = z_g * alpha + (1 -alpha) * z_filt_accel;
+
+    *ax = x_filt_accel;
+    *ay = y_filt_accel;
+    *az = z_filt_accel;
 }
