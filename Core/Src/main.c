@@ -58,6 +58,7 @@ extern USBD_HandleTypeDef hUsbDeviceFS;
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 //
+//
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
